@@ -1,0 +1,571 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    margin: 0;
+    padding: clamp(10px, 3vw, 30px);
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: min(600px, 95vw);
+    padding: clamp(10px, 2vw, 20px);
+}
+
+.screen {
+    display: none;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: clamp(15px, 3vw, 25px);
+    padding: clamp(20px, 5vw, 50px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: fadeIn 0.5s ease-out;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.screen.active {
+    display: block;
+}
+
+h1 {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    margin-bottom: clamp(10px, 2vw, 15px);
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: titleGlow 2s ease-in-out infinite alternate;
+    line-height: 1.2;
+}
+
+@keyframes titleGlow {
+    from {
+        filter: drop-shadow(0 0 5px rgba(255, 107, 107, 0.3));
+    }
+    to {
+        filter: drop-shadow(0 0 15px rgba(255, 107, 107, 0.6));
+    }
+}
+
+.subtitle {
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
+    color: #666;
+    margin-bottom: clamp(20px, 4vw, 30px);
+    line-height: 1.4;
+}
+
+.setup-form {
+    margin: clamp(20px, 4vw, 30px) 0;
+}
+
+.setup-form label {
+    display: block;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    margin-bottom: clamp(8px, 2vw, 10px);
+    font-weight: 600;
+}
+
+.input-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(8px, 2vw, 10px);
+    margin-bottom: clamp(20px, 4vw, 25px);
+}
+
+.setup-form input {
+    width: clamp(60px, 15vw, 80px);
+    padding: clamp(12px, 3vw, 15px);
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    border: 3px solid #ddd;
+    border-radius: clamp(10px, 2vw, 15px);
+    text-align: center;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    background: white;
+}
+
+.setup-form input:focus {
+    outline: none;
+    border-color: #ff6b6b;
+    box-shadow: 0 0 15px rgba(255, 107, 107, 0.3);
+}
+
+.input-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3px, 1vw, 5px);
+}
+
+.input-btn {
+    width: clamp(30px, 8vw, 35px);
+    height: clamp(30px, 8vw, 35px);
+    border: 2px solid #ff6b6b;
+    background: white;
+    color: #ff6b6b;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    font-weight: bold;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.input-btn:hover {
+    background: #ff6b6b;
+    color: white;
+    transform: scale(1.1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    border: none;
+    padding: clamp(15px, 3vw, 18px) clamp(25px, 6vw, 35px);
+    font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+    border-radius: clamp(10px, 2vw, 15px);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+    position: relative;
+    overflow: hidden;
+    min-height: clamp(44px, 8vw, 50px);
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(255, 107, 107, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(-1px);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-secondary {
+    background: #f8f9fa;
+    color: #e74c3c;
+    border: 2px solid #e74c3c;
+    padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px);
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    border-radius: clamp(6px, 1.5vw, 8px);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-weight: 600;
+    min-height: clamp(36px, 6vw, 40px);
+}
+
+.btn-secondary:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+.rules {
+    text-align: left;
+    background: #f8f9fa;
+    padding: clamp(15px, 3vw, 20px);
+    border-radius: clamp(8px, 2vw, 10px);
+    margin-top: clamp(20px, 4vw, 30px);
+}
+
+.rules h3 {
+    color: #e74c3c;
+    margin-bottom: clamp(10px, 2vw, 15px);
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+.rules ul {
+    list-style: none;
+}
+
+.rules li {
+    padding: clamp(6px, 1.5vw, 8px) 0;
+    position: relative;
+    padding-left: clamp(20px, 4vw, 25px);
+    font-size: clamp(0.8rem, 2.2vw, 0.9rem);
+    line-height: 1.4;
+}
+
+.rules li:before {
+    content: "🔍";
+    color: #e74c3c;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: clamp(20px, 4vw, 30px);
+    flex-wrap: wrap;
+    gap: clamp(10px, 2vw, 15px);
+}
+
+.game-header h2 {
+    color: #e74c3c;
+    font-size: clamp(1.2rem, 4vw, 1.8rem);
+    margin: 0;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    margin: clamp(25px, 5vw, 40px) 0;
+}
+
+.card {
+    width: clamp(280px, 80vw, 320px);
+    height: clamp(200px, 60vw, 220px);
+    perspective: 1200px;
+    cursor: pointer;
+    margin: clamp(15px, 3vw, 20px) auto;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+    transform: rotateY(180deg);
+}
+
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.card-front {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.card-back {
+    background: linear-gradient(135deg, #fff, #f8f9fa);
+    color: #333;
+    transform: rotateY(180deg);
+    border: 3px solid #ff6b6b;
+    box-shadow: inset 0 0 20px rgba(255, 107, 107, 0.1);
+}
+
+.card-content {
+    padding: clamp(15px, 3vw, 20px);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.card-text {
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.word-text {
+    font-size: clamp(1.8rem, 8vw, 2.8rem);
+    font-weight: 800;
+    color: #ff6b6b;
+    margin-bottom: clamp(10px, 2vw, 15px);
+    display: block;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    animation: wordReveal 0.6s ease-out;
+    line-height: 1.2;
+}
+
+@keyframes wordReveal {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.imposter-notice {
+    margin-top: 15px;
+}
+
+.imposter-badge {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    padding: clamp(8px, 2vw, 12px) clamp(15px, 3vw, 20px);
+    border-radius: clamp(15px, 4vw, 25px);
+    font-size: clamp(0.8rem, 2.5vw, 1rem);
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: clamp(10px, 2vw, 15px);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+    animation: imposterPulse 2s ease-in-out infinite;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    line-height: 1.2;
+}
+
+@keyframes imposterPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+    }
+}
+
+.imposter-notice p {
+    color: #666;
+    font-size: clamp(0.7rem, 2.2vw, 0.9rem);
+    line-height: 1.3;
+}
+
+.game-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(10px, 2vw, 15px);
+}
+
+.player-progress {
+    color: #666;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    font-weight: 600;
+    background: rgba(255, 107, 107, 0.1);
+    padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px);
+    border-radius: clamp(10px, 2vw, 15px);
+    border: 2px solid rgba(255, 107, 107, 0.2);
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 107, 107, 0.2);
+    border-radius: 4px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+}
+
+.game-complete {
+    text-align: center;
+    padding: 30px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 249, 250, 0.9));
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.game-complete h2 {
+    color: #ff6b6b;
+    margin-bottom: 25px;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.game-complete p {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+}
+
+.game-instructions {
+    background: #f8f9fa;
+    padding: clamp(15px, 3vw, 20px);
+    border-radius: clamp(8px, 2vw, 10px);
+    margin: clamp(15px, 3vw, 20px) 0;
+    text-align: left;
+}
+
+.game-instructions ol {
+    margin-left: clamp(15px, 3vw, 20px);
+}
+
+.game-instructions li {
+    padding: clamp(6px, 1.5vw, 8px) 0;
+    color: #333;
+    font-size: clamp(0.8rem, 2.2vw, 0.9rem);
+    line-height: 1.4;
+}
+
+.imposter-info {
+    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    color: white;
+    padding: clamp(12px, 2.5vw, 15px);
+    border-radius: clamp(8px, 2vw, 10px);
+    margin-top: clamp(15px, 3vw, 20px);
+}
+
+.imposter-info p {
+    color: white;
+    margin: 0;
+    font-weight: 600;
+    font-size: clamp(0.8rem, 2.2vw, 0.9rem);
+    line-height: 1.3;
+}
+
+/* Mobile devices */
+@media (max-width: 768px) {
+    .game-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .input-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .input-buttons {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+    .card {
+        width: 90vw;
+        height: 60vw;
+    }
+    
+    .word-text {
+        font-size: clamp(1.5rem, 6vw, 2rem);
+    }
+    
+    .btn-primary {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Landscape orientation on mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+    .screen {
+        padding: 15px;
+    }
+    
+    .card {
+        height: 50vh;
+        width: auto;
+        max-width: 60vw;
+    }
+    
+    h1 {
+        font-size: clamp(1.5rem, 4vw, 2rem);
+        margin-bottom: 10px;
+    }
+    
+    .subtitle {
+        font-size: clamp(0.8rem, 2vw, 1rem);
+        margin-bottom: 15px;
+    }
+}
+
+/* Large screens */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 800px;
+    }
+    
+    .card {
+        width: 400px;
+        height: 280px;
+    }
+    
+    .word-text {
+        font-size: 3.5rem;
+    }
+}
