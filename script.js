@@ -59,11 +59,34 @@ class WordImposterGame {
             if (e.target.closest('#next-player')) {
                 this.nextPlayer();
             }
+            if (e.target.closest('#imposter-reveal')) {
+                this.toggleImposterReveal();
+            }
             if (e.target.closest('#new-game') || e.target.id === 'new-game') {
                 this.showSetupScreen();
             }
             if (e.target.closest('#back-to-setup') || e.target.id === 'back-to-setup') {
                 this.showSetupScreen();
+            }
+        });
+
+        // Keyboard accessibility for flipping the card
+        document.addEventListener('keydown', (e) => {
+            const card = document.getElementById('word-card');
+            if (!card) return;
+            if (document.activeElement === card && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                this.flipCard();
+            }
+        });
+
+        // Keyboard accessibility for revealing the imposter in completion screen
+        document.addEventListener('keydown', (e) => {
+            const reveal = document.getElementById('imposter-reveal');
+            if (!reveal) return;
+            if (document.activeElement === reveal && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                this.toggleImposterReveal();
             }
         });
     }
@@ -106,13 +129,17 @@ class WordImposterGame {
         // Reset card
         this.resetCard();
         
-        // Log for debugging (remove in production)
-        console.log(`Game setup: ${playerCount} players, imposter is player ${this.imposterIndex + 1}`);
+        // Ready for play
     }
 
     showGameScreen() {
         document.getElementById('setup-screen').classList.remove('active');
         document.getElementById('game-screen').classList.add('active');
+        // Focus the card for immediate keyboard accessibility
+        setTimeout(() => {
+            const card = document.getElementById('word-card');
+            if (card) card.focus();
+        }, 0);
     }
 
     showSetupScreen() {
@@ -169,9 +196,15 @@ class WordImposterGame {
         
         // Flip the card
         card.classList.add('flipped');
+        card.setAttribute('aria-pressed', 'true');
         
         // Enable next player button
         nextButton.disabled = false;
+
+        // Update ARIA for imposter notice visibility
+        if (imposterNotice) {
+            imposterNotice.setAttribute('aria-hidden', isImposter ? 'false' : 'true');
+        }
     }
 
     nextPlayer() {
@@ -197,6 +230,12 @@ class WordImposterGame {
         if (nextButton) {
             nextButton.disabled = true;
         }
+
+        // Return focus to the card for the next player
+        setTimeout(() => {
+            const cardNext = document.getElementById('word-card');
+            if (cardNext) cardNext.focus();
+        }, 0);
     }
 
     resetCard() {
@@ -207,6 +246,7 @@ class WordImposterGame {
         // Check if elements exist before accessing them
         if (card) {
             card.classList.remove('flipped');
+            card.setAttribute('aria-pressed', 'false');
         }
         
         if (wordText) {
@@ -215,6 +255,7 @@ class WordImposterGame {
         
         if (imposterNotice) {
             imposterNotice.style.display = 'none';
+            imposterNotice.setAttribute('aria-hidden', 'true');
         }
     }
 
@@ -235,19 +276,19 @@ class WordImposterGame {
         
         // Restore original card HTML
         cardContainer.innerHTML = `
-            <div class="card" id="word-card">
+            <div class="card" id="word-card" role="button" tabindex="0" aria-label="Reveal your secret word" aria-pressed="false">
                 <div class="card-inner">
                     <div class="card-front">
                         <div class="card-content">
-                            <span class="card-text">🕵️ Click to reveal your secret word</span>
+                            <span class="card-text">Click or press Enter to reveal your secret word</span>
                         </div>
                     </div>
                     <div class="card-back">
                         <div class="card-content">
-                            <span class="word-text" id="word-text"></span>
-                            <div class="imposter-notice" id="imposter-notice" style="display: none;">
-                                <span class="imposter-badge">🤥 YOU ARE THE IMPOSTER!</span>
-                                <p>🕵️ Deceive and blend in with your clues!</p>
+                            <span class="word-text" id="word-text" aria-live="polite" aria-atomic="true"></span>
+                            <div class="imposter-notice" id="imposter-notice" style="display: none;" aria-hidden="true">
+                                <span class="imposter-badge">YOU ARE THE IMPOSTER!</span>
+                                <p>Deceive and blend in with your clues!</p>
                             </div>
                         </div>
                     </div>
@@ -257,10 +298,10 @@ class WordImposterGame {
         
         // Restore original controls
         gameControls.innerHTML = `
-            <button id="next-player" class="btn-primary" disabled>⏭️ Next Player</button>
+            <button id="next-player" class="btn-primary" disabled>Next Player</button>
             <div class="player-progress">
-                <span id="progress-text">Player 1 of <span id="total-players">4</span></span>
-                <div class="progress-bar">
+                <span id="progress-text" aria-live="polite" aria-atomic="true">Player 1 of <span id="total-players">4</span></span>
+                <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Player progress">
                     <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
                 </div>
             </div>
@@ -274,6 +315,7 @@ class WordImposterGame {
         const currentPlayerElement = document.getElementById('current-player');
         const progressTextElement = document.getElementById('progress-text');
         const progressFill = document.getElementById('progress-fill');
+        const progressBar = document.querySelector('.progress-bar');
         
         if (currentPlayerElement) {
             currentPlayerElement.textContent = this.currentPlayerIndex + 1;
@@ -287,6 +329,9 @@ class WordImposterGame {
         if (progressFill) {
             const progress = (this.currentPlayerIndex / this.players.length) * 100;
             progressFill.style.width = `${progress}%`;
+            if (progressBar) {
+                progressBar.setAttribute('aria-valuenow', String(Math.round(progress)));
+            }
         }
     }
 
@@ -298,19 +343,26 @@ class WordImposterGame {
         const completionDiv = document.createElement('div');
         completionDiv.className = 'game-complete';
         completionDiv.innerHTML = `
-            <h2>🕵️ Investigation Phase Begins!</h2>
+            <h2>Investigation Phase Begins!</h2>
             <p>All players have seen their cards. Now the real game begins:</p>
             <div class="game-instructions">
                 <ol>
-                    <li>🔍 Take turns giving clues about your word</li>
-                    <li>🤥 The imposter must deceive and blend in</li>
-                    <li>⚖️ Discuss and analyze everyone's behavior</li>
-                    <li>🎯 Vote to identify the imposter</li>
-                    <li>🏆 Imposter wins if not caught, others win if imposter is found</li>
+                    <li>Take turns giving clues about your word</li>
+                    <li>The imposter must deceive and blend in</li>
+                    <li>Discuss and analyze everyone's behavior</li>
+                    <li>Vote to identify the imposter</li>
+                    <li>Imposter wins if not caught; others win if imposter is found</li>
                 </ol>
             </div>
-            <div class="imposter-info">
-                <p><strong>🕵️ Secret Intel:</strong> Player ${this.imposterIndex + 1} is the imposter!</p>
+            <div class="imposter-reveal" id="imposter-reveal" role="button" tabindex="0" aria-expanded="false" aria-label="Reveal the imposter">
+                <div class="imposter-reveal-inner">
+                    <div class="imposter-reveal-front" aria-hidden="false">
+                        <span class="imposter-reveal-cta">Reveal Imposter</span>
+                    </div>
+                    <div class="imposter-reveal-back" aria-hidden="true">
+                        <span class="imposter-reveal-text">Secret Intel: Player ${this.imposterIndex + 1} is the imposter!</span>
+                    </div>
+                </div>
             </div>
         `;
         
@@ -320,8 +372,24 @@ class WordImposterGame {
         
         // Update controls
         gameControls.innerHTML = `
-            <button id="new-game" class="btn-primary" onclick="startNewGame()">🔄 Play Again</button>
+            <button id="new-game" class="btn-primary" onclick="startNewGame()">Play Again</button>
         `;
+    }
+
+    toggleImposterReveal() {
+        const reveal = document.getElementById('imposter-reveal');
+        if (!reveal) return;
+        const inner = reveal.querySelector('.imposter-reveal-inner');
+        const front = reveal.querySelector('.imposter-reveal-front');
+        const back = reveal.querySelector('.imposter-reveal-back');
+        const expanded = reveal.getAttribute('aria-expanded') === 'true';
+
+        if (inner) {
+            inner.classList.toggle('flipped', !expanded);
+        }
+        reveal.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        if (front) front.setAttribute('aria-hidden', expanded ? 'false' : 'true');
+        if (back) back.setAttribute('aria-hidden', expanded ? 'true' : 'false');
     }
 }
 

@@ -4,35 +4,112 @@
     box-sizing: border-box;
 }
 
+:root {
+    /* Colors */
+    --color-bg: #0f1629;
+    --color-surface: rgba(255, 255, 255, 0.96);
+    --color-border: rgba(255, 255, 255, 0.22);
+    --color-text: #222;
+    --color-text-muted: #666;
+    --color-primary-1: #ff6b6b; /* coral */
+    --color-primary-2: #ee5a24; /* orange */
+    --color-accent: #e74c3c; /* red */
+    --color-surface-muted: #f8f9fa;
+
+    /* Gradients */
+    --gradient-bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    --gradient-primary: linear-gradient(135deg, var(--color-primary-1), var(--color-primary-2));
+
+    /* Spacing scale */
+    --space-1: clamp(4px, 0.8vw, 6px);
+    --space-2: clamp(8px, 1.6vw, 10px);
+    --space-3: clamp(12px, 2.4vw, 15px);
+    --space-4: clamp(16px, 3.2vw, 20px);
+    --space-5: clamp(20px, 4vw, 30px);
+    --space-6: clamp(24px, 4.8vw, 40px);
+
+    /* Radii */
+    --radius-s: clamp(6px, 1.5vw, 8px);
+    --radius-m: clamp(10px, 2vw, 15px);
+    --radius-l: clamp(15px, 3vw, 25px);
+
+    /* Shadows */
+    --shadow-s: 0 4px 12px rgba(0, 0, 0, 0.12);
+    --shadow-m: 0 12px 24px rgba(0, 0, 0, 0.18);
+    --shadow-l: 0 25px 50px rgba(0, 0, 0, 0.2);
+
+    /* Typography */
+    --font-sans: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-size-xs: clamp(0.75rem, 1.8vw, 0.85rem);
+    --font-size-sm: clamp(0.85rem, 2.2vw, 0.95rem);
+    --font-size-md: clamp(1rem, 2.5vw, 1.1rem);
+    --font-size-lg: clamp(1.25rem, 4vw, 1.6rem);
+    --font-size-xl: clamp(2rem, 8vw, 3.5rem);
+
+    /* Focus */
+    --focus-ring: 0 0 0 3px rgba(255, 107, 107, 0.35);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --color-bg: #0a0f1e;
+        --color-surface: rgba(20, 24, 38, 0.85);
+        --color-border: rgba(255, 255, 255, 0.12);
+        --color-text: #e9eef5;
+        --color-text-muted: #a9b3c1;
+        --color-surface-muted: rgba(255, 255, 255, 0.06);
+        --gradient-bg: linear-gradient(135deg, #0a0f1e 0%, #0c1730 50%, #0f3460 100%);
+    }
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    font-family: var(--font-sans);
+    background: var(--gradient-bg);
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #333;
+    color: var(--color-text);
     margin: 0;
     padding: clamp(10px, 3vw, 30px);
     box-sizing: border-box;
     overflow-x: hidden;
+    line-height: 1.5;
+}
+
+.skip-link {
+    position: absolute;
+    inset-inline-start: 10px;
+    inset-block-start: -40px;
+    background: var(--color-surface);
+    color: var(--color-text);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-s);
+    box-shadow: var(--shadow-s);
+    transition: transform 0.2s ease;
+}
+
+.skip-link:focus {
+    transform: translateY(50px);
+    box-shadow: var(--focus-ring);
 }
 
 .container {
     width: 100%;
     max-width: min(600px, 95vw);
-    padding: clamp(10px, 2vw, 20px);
+    padding-inline: clamp(10px, 2vw, 20px);
+    padding-block: clamp(10px, 2vw, 20px);
 }
 
 .screen {
     display: none;
-    background: rgba(255, 255, 255, 0.95);
+    background: var(--color-surface);
     backdrop-filter: blur(10px);
-    border-radius: clamp(15px, 3vw, 25px);
+    border-radius: var(--radius-l);
     padding: clamp(20px, 5vw, 50px);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-l);
     text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid var(--color-border);
     animation: fadeIn 0.5s ease-out;
     width: 100%;
     box-sizing: border-box;
@@ -54,9 +131,9 @@ body {
 }
 
 h1 {
-    font-size: clamp(2rem, 8vw, 3.5rem);
-    margin-bottom: clamp(10px, 2vw, 15px);
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    font-size: var(--font-size-xl);
+    margin-block-end: clamp(10px, 2vw, 15px);
+    background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -64,6 +141,11 @@ h1 {
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     animation: titleGlow 2s ease-in-out infinite alternate;
     line-height: 1.2;
+}
+
+h2 {
+    font-size: var(--font-size-lg);
+    line-height: 1.3;
 }
 
 @keyframes titleGlow {
@@ -76,20 +158,20 @@ h1 {
 }
 
 .subtitle {
-    font-size: clamp(0.9rem, 3vw, 1.2rem);
-    color: #666;
-    margin-bottom: clamp(20px, 4vw, 30px);
+    font-size: var(--font-size-md);
+    color: var(--color-text-muted);
+    margin-block-end: clamp(20px, 4vw, 30px);
     line-height: 1.4;
 }
 
 .setup-form {
-    margin: clamp(20px, 4vw, 30px) 0;
+    margin-block: clamp(20px, 4vw, 30px);
 }
 
 .setup-form label {
     display: block;
     font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-    margin-bottom: clamp(8px, 2vw, 10px);
+    margin-block-end: clamp(8px, 2vw, 10px);
     font-weight: 600;
 }
 
@@ -98,15 +180,16 @@ h1 {
     align-items: center;
     justify-content: center;
     gap: clamp(8px, 2vw, 10px);
-    margin-bottom: clamp(20px, 4vw, 25px);
+    margin-block-end: clamp(20px, 4vw, 25px);
 }
 
 .setup-form input {
     width: clamp(60px, 15vw, 80px);
-    padding: clamp(12px, 3vw, 15px);
+    padding-inline: clamp(12px, 3vw, 15px);
+    padding-block: clamp(12px, 3vw, 15px);
     font-size: clamp(1rem, 3vw, 1.3rem);
     border: 3px solid #ddd;
-    border-radius: clamp(10px, 2vw, 15px);
+    border-radius: var(--radius-m);
     text-align: center;
     transition: all 0.3s ease;
     font-weight: 600;
@@ -147,13 +230,19 @@ h1 {
     transform: scale(1.1);
 }
 
+.input-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
 .btn-primary {
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    background: var(--gradient-primary);
     color: white;
     border: none;
-    padding: clamp(15px, 3vw, 18px) clamp(25px, 6vw, 35px);
+    padding-block: clamp(15px, 3vw, 18px);
+    padding-inline: clamp(25px, 6vw, 35px);
     font-size: clamp(0.9rem, 2.5vw, 1.2rem);
-    border-radius: clamp(10px, 2vw, 15px);
+    border-radius: var(--radius-m);
     cursor: pointer;
     transition: all 0.3s ease;
     font-weight: 700;
@@ -196,13 +285,19 @@ h1 {
     box-shadow: none;
 }
 
+.btn-primary:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
 .btn-secondary {
     background: #f8f9fa;
-    color: #e74c3c;
-    border: 2px solid #e74c3c;
-    padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px);
+    color: var(--color-accent);
+    border: 2px solid var(--color-accent);
+    padding-block: clamp(8px, 2vw, 10px);
+    padding-inline: clamp(15px, 3vw, 20px);
     font-size: clamp(0.8rem, 2vw, 1rem);
-    border-radius: clamp(6px, 1.5vw, 8px);
+    border-radius: var(--radius-s);
     cursor: pointer;
     transition: all 0.2s ease;
     font-weight: 600;
@@ -214,17 +309,22 @@ h1 {
     color: white;
 }
 
+.btn-secondary:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+}
+
 .rules {
     text-align: left;
-    background: #f8f9fa;
+    background: var(--color-surface-muted);
     padding: clamp(15px, 3vw, 20px);
-    border-radius: clamp(8px, 2vw, 10px);
-    margin-top: clamp(20px, 4vw, 30px);
+    border-radius: var(--radius-s);
+    margin-block-start: clamp(20px, 4vw, 30px);
 }
 
 .rules h3 {
-    color: #e74c3c;
-    margin-bottom: clamp(10px, 2vw, 15px);
+    color: var(--color-accent);
+    margin-block-end: clamp(10px, 2vw, 15px);
     font-size: clamp(1rem, 2.5vw, 1.2rem);
 }
 
@@ -233,26 +333,30 @@ h1 {
 }
 
 .rules li {
-    padding: clamp(6px, 1.5vw, 8px) 0;
+    padding-block: clamp(6px, 1.5vw, 8px);
     position: relative;
-    padding-left: clamp(20px, 4vw, 25px);
+    padding-inline-start: clamp(20px, 4vw, 25px);
     font-size: clamp(0.8rem, 2.2vw, 0.9rem);
     line-height: 1.4;
 }
 
 .rules li:before {
-    content: "🔍";
-    color: #e74c3c;
-    font-weight: bold;
+    content: "";
     position: absolute;
-    left: 0;
+    inset-inline-start: 4px;
+    inset-block-start: 0.8em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #e74c3c;
+    transform: translateY(-50%);
 }
 
 .game-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: clamp(20px, 4vw, 30px);
+    margin-block-end: clamp(20px, 4vw, 30px);
     flex-wrap: wrap;
     gap: clamp(10px, 2vw, 15px);
 }
@@ -266,7 +370,7 @@ h1 {
 .card-container {
     display: flex;
     justify-content: center;
-    margin: clamp(25px, 5vw, 40px) 0;
+    margin-block: clamp(25px, 5vw, 40px);
 }
 
 .card {
@@ -274,11 +378,18 @@ h1 {
     height: clamp(200px, 60vw, 220px);
     perspective: 1200px;
     cursor: pointer;
-    margin: clamp(15px, 3vw, 20px) auto;
+    margin-block: clamp(15px, 3vw, 20px);
+    margin-inline: auto;
     transition: transform 0.3s ease;
 }
 
 .card:hover {
+    transform: scale(1.02);
+}
+
+.card:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
     transform: scale(1.02);
 }
 
@@ -337,7 +448,7 @@ h1 {
     font-size: clamp(1.8rem, 8vw, 2.8rem);
     font-weight: 800;
     color: #ff6b6b;
-    margin-bottom: clamp(10px, 2vw, 15px);
+    margin-block-end: clamp(10px, 2vw, 15px);
     display: block;
     text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     animation: wordReveal 0.6s ease-out;
@@ -362,12 +473,13 @@ h1 {
 .imposter-badge {
     background: linear-gradient(135deg, #ff6b6b, #ee5a24);
     color: white;
-    padding: clamp(8px, 2vw, 12px) clamp(15px, 3vw, 20px);
+    padding-block: clamp(8px, 2vw, 12px);
+    padding-inline: clamp(15px, 3vw, 20px);
     border-radius: clamp(15px, 4vw, 25px);
     font-size: clamp(0.8rem, 2.5vw, 1rem);
     font-weight: 700;
     display: inline-block;
-    margin-bottom: clamp(10px, 2vw, 15px);
+    margin-block-end: clamp(10px, 2vw, 15px);
     box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
     animation: imposterPulse 2s ease-in-out infinite;
     text-transform: uppercase;
@@ -387,7 +499,7 @@ h1 {
 }
 
 .imposter-notice p {
-    color: #666;
+    color: var(--color-text-muted);
     font-size: clamp(0.7rem, 2.2vw, 0.9rem);
     line-height: 1.3;
 }
@@ -400,12 +512,13 @@ h1 {
 }
 
 .player-progress {
-    color: #666;
+    color: var(--color-text-muted);
     font-size: clamp(0.9rem, 2.5vw, 1.1rem);
     font-weight: 600;
     background: rgba(255, 107, 107, 0.1);
-    padding: clamp(8px, 2vw, 10px) clamp(15px, 3vw, 20px);
-    border-radius: clamp(10px, 2vw, 15px);
+    padding-block: clamp(8px, 2vw, 10px);
+    padding-inline: clamp(15px, 3vw, 20px);
+    border-radius: var(--radius-m);
     border: 2px solid rgba(255, 107, 107, 0.2);
     text-align: center;
     width: 100%;
@@ -423,7 +536,7 @@ h1 {
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+    background: var(--gradient-primary);
     border-radius: 4px;
     transition: width 0.5s ease;
 }
@@ -431,7 +544,7 @@ h1 {
 .game-complete {
     text-align: center;
     padding: 30px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 249, 250, 0.9));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 249, 250, 0.98));
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     animation: slideIn 0.6s ease-out;
@@ -456,35 +569,35 @@ h1 {
 }
 
 .game-complete p {
-    color: #666;
+    color: var(--color-text-muted);
     margin-bottom: 20px;
     font-size: 1.1rem;
 }
 
 .game-instructions {
-    background: #f8f9fa;
+    background: rgba(0, 0, 0, 0.04);
     padding: clamp(15px, 3vw, 20px);
-    border-radius: clamp(8px, 2vw, 10px);
-    margin: clamp(15px, 3vw, 20px) 0;
+    border-radius: var(--radius-s);
+    margin-block: clamp(15px, 3vw, 20px);
     text-align: left;
 }
 
 .game-instructions ol {
-    margin-left: clamp(15px, 3vw, 20px);
+    margin-inline-start: clamp(15px, 3vw, 20px);
 }
 
 .game-instructions li {
     padding: clamp(6px, 1.5vw, 8px) 0;
-    color: #333;
-    font-size: clamp(0.8rem, 2.2vw, 0.9rem);
-    line-height: 1.4;
+    color: #000;
+    font-size: clamp(0.9rem, 2.4vw, 1rem);
+    line-height: 1.6;
 }
 
 .imposter-info {
     background: linear-gradient(135deg, #ff6b6b, #ee5a24);
     color: white;
     padding: clamp(12px, 2.5vw, 15px);
-    border-radius: clamp(8px, 2vw, 10px);
+    border-radius: var(--radius-s);
     margin-top: clamp(15px, 3vw, 20px);
 }
 
@@ -494,6 +607,72 @@ h1 {
     font-weight: 600;
     font-size: clamp(0.8rem, 2.2vw, 0.9rem);
     line-height: 1.3;
+}
+
+/* Imposter Reveal Flip Button */
+.imposter-reveal {
+    margin-top: var(--space-4);
+    display: inline-block;
+    perspective: 1000px;
+}
+
+.imposter-reveal-inner {
+    position: relative;
+    width: 100%;
+    min-width: 260px;
+    max-width: 520px;
+    margin-inline: auto;
+    transform-style: preserve-3d;
+    transition: transform 0.6s ease;
+    border-radius: var(--radius-m);
+}
+
+.imposter-reveal-inner.flipped {
+    transform: rotateY(180deg);
+}
+
+.imposter-reveal-front,
+.imposter-reveal-back {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    padding-block: var(--space-3);
+    padding-inline: var(--space-4);
+    border-radius: var(--radius-m);
+    font-weight: 800;
+    color: #fff;
+}
+
+.imposter-reveal-front {
+    background: var(--gradient-primary);
+    box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
+}
+
+.imposter-reveal-back {
+    background: var(--gradient-primary);
+    transform: rotateY(180deg);
+}
+
+.imposter-reveal-cta,
+.imposter-reveal-text {
+    font-size: clamp(0.9rem, 2.5vw, 1.05rem);
+    letter-spacing: 0.3px;
+}
+
+.imposter-reveal:focus-visible .imposter-reveal-inner,
+.imposter-reveal:hover .imposter-reveal-inner {
+    box-shadow: var(--focus-ring);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
 }
 
 /* Mobile devices */
@@ -526,7 +705,8 @@ h1 {
     }
     
     .btn-primary {
-        padding: 12px 20px;
+        padding-block: 12px;
+        padding-inline: 20px;
         font-size: 0.9rem;
     }
 }

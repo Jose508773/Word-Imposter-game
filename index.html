@@ -2,19 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Word Imposter Game</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <a href="#setup-screen" class="skip-link">Skip to main content</a>
+    <main class="container" role="main">
         <!-- Setup Screen -->
         <div id="setup-screen" class="screen active">
-            <h1>🕵️ Word Imposter</h1>
+            <h1>Word Imposter</h1>
             <p class="subtitle">One player is secretly the imposter. Can you figure out who?</p>
             
             <div class="setup-form">
-                <label for="player-count">🎮 How many players?</label>
+                <label for="player-count">How many players?</label>
                 <div class="input-container">
                     <input type="number" id="player-count" min="3" max="10" value="4">
                     <div class="input-buttons">
@@ -22,11 +23,11 @@
                         <button type="button" class="input-btn" onclick="adjustPlayerCount(1)">+</button>
                     </div>
                 </div>
-                <button id="start-game" class="btn-primary">🚀 Start Game</button>
+                <button id="start-game" class="btn-primary">Start Game</button>
             </div>
             
             <div class="rules">
-                <h3>🕵️ How to Play:</h3>
+                <h3>How to Play:</h3>
                 <ul>
                     <li>Everyone gets a card with the same word (except the imposter)</li>
                     <li>The imposter gets a different word and must lie to blend in</li>
@@ -46,19 +47,19 @@
             </div>
             
             <div class="card-container">
-                <div class="card" id="word-card">
+                <div class="card" id="word-card" role="button" tabindex="0" aria-label="Reveal your secret word" aria-pressed="false">
                     <div class="card-inner">
                         <div class="card-front">
                             <div class="card-content">
-                                <span class="card-text">🕵️ Click to reveal your secret word</span>
+                                <span class="card-text">Click or press Enter to reveal your secret word</span>
                             </div>
                         </div>
                         <div class="card-back">
                             <div class="card-content">
-                                <span class="word-text" id="word-text"></span>
-                                <div class="imposter-notice" id="imposter-notice" style="display: none;">
-                                    <span class="imposter-badge">🤥 YOU ARE THE IMPOSTER!</span>
-                                    <p>🕵️ Deceive and blend in with your clues!</p>
+                                <span class="word-text" id="word-text" aria-live="polite" aria-atomic="true"></span>
+                                <div class="imposter-notice" id="imposter-notice" style="display: none;" aria-hidden="true">
+                                    <span class="imposter-badge">YOU ARE THE IMPOSTER!</span>
+                                    <p>Deceive and blend in with your clues!</p>
                                 </div>
                             </div>
                         </div>
@@ -67,16 +68,16 @@
             </div>
             
             <div class="game-controls">
-                <button id="next-player" class="btn-primary" disabled>⏭️ Next Player</button>
+                <button id="next-player" class="btn-primary" disabled>Next Player</button>
                 <div class="player-progress">
-                    <span id="progress-text">Player 1 of <span id="total-players">4</span></span>
-                    <div class="progress-bar">
+                    <span id="progress-text" aria-live="polite" aria-atomic="true">Player 1 of <span id="total-players">4</span></span>
+                    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Player progress">
                         <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <script src="script.js"></script>
 </body>
